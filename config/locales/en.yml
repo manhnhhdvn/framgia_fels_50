@@ -130,6 +130,7 @@ en:
         guide2: "- In other_answers, each word separated by a /"
         guide3: "Example: animal,dog,chó,mèo/gà/vịt/"
         btn_export: "Export CSV file"
+        btn_get_audio: "Get audio online"
       update:
         flash_success: "Change success full"
       edit:

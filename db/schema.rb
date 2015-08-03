@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150721044135) do
+ActiveRecord::Schema.define(version: 20150730074322) do
 
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 20150721044135) do
     t.integer  "category_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "uk_audio"
+    t.string   "us_audio"
   end
 
   add_index "words", ["category_id"], name: "index_words_on_category_id"

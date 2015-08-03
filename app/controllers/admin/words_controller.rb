@@ -1,6 +1,5 @@
 class Admin::WordsController < Admin::BaseController
   require "csv"
-  require "rails/all"
   before_action :verify_admin
   before_action :current_word, only: [:edit, :update]
   
@@ -8,17 +7,25 @@ class Admin::WordsController < Admin::BaseController
   end
 
   def create
-    if params[:file].nil? && !params[:check_action].nil?
-      respond_to do |format|
-        format.html 
-        format.csv {send_data export}
-      end
-    else
+    if !params[:file].nil?
       import params[:file]
+    else
+      if params[:check_action] == "export"
+        respond_to do |format|
+          format.html
+          format.csv {send_data export}
+        end
+      elsif params[:check_action] == "get_audio"
+        @data1 = "dog"
+        @data = [message: "@data1"]
+        respond_to do |format|
+          format.json { render :json => @data }
+        end
+      end
     end
   end
 
-  def edit    
+  def edit
   end
 
   def update
@@ -30,6 +37,7 @@ class Admin::WordsController < Admin::BaseController
   private
   def import file
     count = 0
+    word_list = ""
     begin
       CSV.foreach file.path, headers: true do |f|
         item_hash = f.to_hash
@@ -38,6 +46,8 @@ class Admin::WordsController < Admin::BaseController
           if Word.find_by(content: item_hash["word_content"]).nil?
             count = create_word(item_hash["word_content"],
               item_hash["true_answer"], item_hash["other_answers"], category.id, count)
+            word_list << item_hash["word_content"]
+            word_list << ","
           end
         end
       end
